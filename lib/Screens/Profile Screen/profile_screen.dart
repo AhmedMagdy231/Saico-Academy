@@ -99,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
         return buildGlobOverLay(
           widget: Scaffold(
             body:  CashHelper.getData(key: 'login') == null?
-            buildLoginFirst(width, height, context)
+            BuildLoginFirst(width:width, height:height, context:context)
                 : cubit.userModel == null? buildLoadingWidget() : SingleChildScrollView(
               child: Column(
                 children: [

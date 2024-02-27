@@ -15,6 +15,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../generated/l10n.dart';
 
+import '../Drawer/drawer_screen.dart';
 import '../Login/login_screen.dart';
 
 import 'package:badges/badges.dart' as badges;
@@ -33,9 +34,13 @@ class HomeLayout extends StatelessWidget {
         var cubit = AppCubit.get(context);
         return Scaffold(
           key: cubit.scaffoldKey,
-          //drawer: buildDrawer(width, height, cubit, context),
-          appBar: AppBar(
 
+
+          drawer: buildDrawer(width, height, cubit, context),
+          appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: MyColor.primaryColor,
+          ),
            centerTitle: true,
             title: Column(
               children: [
