@@ -68,9 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
           // TODO Forget Password Screen
            AppCubit.get(context).postUserData(token: state.token);
 
-          //Navigator.pop(context);
+          Navigator.pop(context);
 
-           navigateToToFinish(context, HomeLayout());
+           //navigateToToFinish(context, HomeLayout());
 
            var snackBar = buildSnackBar2(
                num: 1,

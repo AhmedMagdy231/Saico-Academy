@@ -243,14 +243,15 @@ class AppCubit extends Cubit<AppState> {
         token:  CashHelper.getData(key: 'token')??'',
       ).then((value) async {
 
+        await getCountriesData();
+        await  getTimeZoneData();
 
         userModel = UserModel.formJson(value.data);
 
 
         if(userModel!.hasError == false){
 
-          getCountriesData();
-          getTimeZoneData();
+
 
            nameController.text = userModel!.isStudent == true?
            userModel!.data!.student!.studentFullname! :
@@ -275,6 +276,10 @@ class AppCubit extends Cubit<AppState> {
           countryController.text = userModel!.isStudent == true?
           userModel!.data!.student!.studentCountry! :
           userModel!.data!.instructor!.instructorCountry!;
+
+          timeZoneController.text = userModel!.isStudent == true?
+          userModel!.data!.student!.studentTimezone! :
+          userModel!.data!.instructor!.instructorTimezone!;
 
 
           // phoneController.text = userModel!.data!.student!.studentPhone!;
@@ -468,15 +473,17 @@ class AppCubit extends Cubit<AppState> {
       if (imagee == null) return;
       File? img = File(imagee.path);
       img = await _cropImage(imageFile: img);
-
       image = img;
+
       emit(ImagePickerSuccess());
+
     } on PlatformException catch (error) {
       print(error);
     }
   }
 
   Future<File?> _cropImage({required File imageFile}) async {
+
 
     try{
       CroppedFile? croppedImage = await ImageCropper().cropImage(sourcePath: imageFile.path);
@@ -486,7 +493,10 @@ class AppCubit extends Cubit<AppState> {
     catch (error){
       print(error.toString());
 
+
     }
+
+
   }
 
   Future<void> postChangeProfile({
@@ -501,6 +511,8 @@ class AppCubit extends Cubit<AppState> {
 
     FormData? student_pic_file,
   }) async {
+
+
 
     FormData formData = FormData.fromMap({
       'password' : '12345678',

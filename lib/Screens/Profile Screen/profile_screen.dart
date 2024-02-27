@@ -146,7 +146,6 @@ class ProfileScreen extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () {
                                 //
-
                                 showDialog(
                                     context: context,
                                     builder: (_){

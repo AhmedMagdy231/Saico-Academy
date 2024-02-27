@@ -56,7 +56,6 @@ class BuildLoginFirst extends StatelessWidget {
               size: 15
           ),
 
-
         ],
       ),
     );
