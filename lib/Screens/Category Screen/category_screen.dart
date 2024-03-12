@@ -39,7 +39,7 @@ class CategoryScreen extends StatelessWidget {
                     padding:  EdgeInsets.symmetric(vertical: height*0.0),
                     child: GestureDetector(
                       onTap: (){
-                        cubit.postCategoryDetails(id: cubit.categoryModel!.data!.productsCats![index].pRODUCTSCATID);
+                       cubit.postCategoryDetails(id: cubit.categoryModel!.data!.productsCats![index].pRODUCTSCATID);
                         navigateTo(
                             context,
                             CategoryDetailsScreen(

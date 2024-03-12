@@ -6,10 +6,12 @@ import '../../../Cubits/App Cubit/app_cubit.dart';
 
 class AnimatedSmoothIndicatorWidget extends StatelessWidget {
   final AppCubit cubit;
+  final int length;
 
   const AnimatedSmoothIndicatorWidget({
     Key? key,
     required this.cubit,
+    required this.length
   }) : super(key: key);
 
   @override
@@ -17,7 +19,7 @@ class AnimatedSmoothIndicatorWidget extends StatelessWidget {
     return Center(
       child: AnimatedSmoothIndicator(
         activeIndex: cubit.yourActiveIndexSlider,
-        count: cubit.homeModel!.data!.slides!.length,
+        count: length,
         effect: ExpandingDotsEffect(
           spacing: 5.0,
           radius: 12.0,

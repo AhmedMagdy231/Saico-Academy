@@ -11,16 +11,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:saico_academy/Screens/Home%20Screen/Components/Slider.dart';
 import 'package:saico_academy/Screens/Home%20Screen/Components/loading_shimmer.dart';
+
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../Components/Functions/functions.dart';
-import '../../Components/Text/text.dart';
 import '../../Components/components.dart';
+import '../../Shared/Widgets/Indicator/animated_smoth_Indicator.dart';
+import '../../Shared/Widgets/Text Address/text_address.dart';
 import '../Category Details/category_details.dart';
-import 'Components/animated_smoth_Indicator.dart';
+import '../Progrom Details/program_details_screen.dart';
 import 'Components/build_item.dart';
-import 'Components/text_address.dart';
+
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -52,13 +53,14 @@ class HomeScreen extends StatelessWidget {
                   height: height * 0.02,
                 ),
 
-                AnimatedSmoothIndicatorWidget(cubit : cubit),
+                AnimatedSmoothIndicatorWidget(cubit : cubit,length: cubit.homeModel!.data!.slides!.length,),
                 SizedBox(
                   height: height * 0.02,
                 ),
 
                 cubit.homeModel!.data!.productsCats!.isEmpty? const SizedBox():
                 CategoryTextWidget(text: 'تصنيف الكورسات',width: width,height: height),
+
                 buildListViewItem(height: height,width: width,cubit: cubit,cat: true),
 
                 cubit.homeModel!.data!.newProducts!.isEmpty? const SizedBox():
@@ -91,7 +93,7 @@ class HomeScreen extends StatelessWidget {
           return GestureDetector(
             onTap: (){
               if(cat){
-                //print(cubit.homeModel!.data!.productsCats![index].pRODUCTSCATID);
+
                 cubit.postCategoryDetails(id: cubit.homeModel!.data!.productsCats![index].pRODUCTSCATID);
                 // TODO
                 navigateTo(context,
@@ -102,9 +104,9 @@ class HomeScreen extends StatelessWidget {
 
                 // TODO
                 cubit.postPageDetails(id: cubit.homeModel!.data!.newProducts![index].pRODUCTID);
-                // navigateTo(context,
-                //   PageDetailsScreen(title: cubit.homeModel!.data!.newPages![index].pageName!),
-                // );
+                navigateTo(context,
+                  ProgramDetailsScreen(title: cubit.homeModel!.data!.newProducts![index].productName!),
+                );
               }
             },
             child: ItemWidget(width:width, height:height, cubit:cubit, index:index,isCategory: cat),

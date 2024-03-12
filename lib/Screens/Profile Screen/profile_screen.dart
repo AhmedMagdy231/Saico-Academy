@@ -213,22 +213,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // Positioned(
-                        //   top: height*0.25,
-                        //   left: width/2 + width*0.1,
-                        //   child: Container(
-                        //     width: 40,
-                        //     decoration: BoxDecoration(
-                        //       shape: BoxShape.circle,
-                        //       color: Colors.grey,
-                        //     ),
-                        //     child: IconButton(
-                        //       onPressed: (){},
-                        //       icon: Icon(Icons.edit,color: Colors.white,size: 30,),
-                        //       padding: EdgeInsets.all(0),
-                        //     ),
-                        //   ),
-                        // ),
+
                       ],
                     ),
                   ),

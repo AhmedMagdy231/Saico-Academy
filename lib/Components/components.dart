@@ -248,33 +248,24 @@ ClipRRect buildImage({
 
 
 
-TextFormField buildTextFormFieldNote({
-  required controller,
-  required valid,
-  required hint,
-  bool? description,
-}) {
-  return TextFormField(
-    validator: valid,
-    controller: controller,
-    maxLines: description == null ? null : 10,
-    decoration: InputDecoration(
-        errorStyle: GoogleFonts.notoNaskhArabic(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
-        hintText: hint,
-        hintStyle: GoogleFonts.notoNaskhArabic(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
-        border: description == null ? null : OutlineInputBorder()),
-  );
-}
 
 String formatTime(timeStamp) {
   var TimeStamp = DateTime.fromMillisecondsSinceEpoch(timeStamp);
-  return DateFormat('hh:mm a').format(TimeStamp).toString();
+  //return DateFormat('hh:mm a').format(TimeStamp).toString();
+
+
+  // Convert timestamp string to DateTime
+  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
+
+
+  dateTime = dateTime.toLocal();
+
+
+
+  // Format the DateTime to display only hours and minutes
+  String formattedTime = DateFormat('hh:mm a', 'ar_EG').format(dateTime.toLocal());
+
+  return formattedTime;
 }
 
 Center buildNoItem(double width, double height,{required String name,required text, bool? color}) {

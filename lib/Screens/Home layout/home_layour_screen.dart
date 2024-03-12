@@ -13,6 +13,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
+import '../../Constant/Varibles/variables.dart';
 import '../../generated/l10n.dart';
 
 import '../Drawer/drawer_screen.dart';
@@ -59,7 +60,7 @@ class HomeLayout extends StatelessWidget {
 
 
           ),
-          body: cubit.myScreens[cubit.indexScreen],
+          body: myScreens[cubit.indexScreen],
           bottomNavigationBar: Container(
             child: Padding(
               padding: EdgeInsets.symmetric(

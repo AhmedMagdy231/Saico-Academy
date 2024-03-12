@@ -22,8 +22,6 @@ class UserModel{
           this.isStudent = false;
         }
 
-      print(this.isStudent);
-      print('++++++++++++++++++++++++++++++++');
 
     }
     else{

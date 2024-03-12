@@ -119,6 +119,8 @@ dependencies:
 
   flutter_widget_from_html_core: ^0.14.9
 
+  tab_container: ^2.0.0
+
 
  #PDF
   syncfusion_flutter_pdfviewer: any

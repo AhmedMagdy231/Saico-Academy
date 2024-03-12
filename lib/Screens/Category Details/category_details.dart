@@ -5,9 +5,11 @@ import 'package:saico_academy/Constant/Colors/colors.dart';
 import 'package:saico_academy/Cubits/App%20Cubit/app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:shimmer/shimmer.dart';
 
 import '../../Components/Functions/functions.dart';
+import '../Progrom Details/program_details_screen.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
   late String categoryName;
@@ -49,6 +51,9 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
         return Scaffold(
 
           appBar: AppBar(
+            iconTheme: IconThemeData(
+              color: MyColor.primaryColor,
+            ),
             title: BuildText(
               text: widget.categoryName == ''?
               cubit.categoryDetailsModel == null? '':cubit.categoryDetailsModel!.data!.productsCat!.productscatTitle!:widget.categoryName,
@@ -91,12 +96,12 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     child: GestureDetector(
                       onTap: (){
                         cubit.postPageDetails(id: cubit.categoryDetailsModel!.data!.products![index].pRODUCTID);
-                        // navigateTo(
-                        //   context,
-                        //   // PageDetailsScreen(
-                        //   //   title: cubit.categoryDetailsModel!.data!.pages![index].pageName!,
-                        //   // ),
-                        // );
+                        navigateTo(
+                          context,
+                           ProgramDetailsScreen(
+                            title: cubit.categoryDetailsModel!.data!.products![index].productName!,
+                          ),
+                        );
                       },
 
                       child: Container(

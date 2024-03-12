@@ -1,4 +1,8 @@
-const String baseUrl = 'https://demo.aladdinds.com/academy/api/';
+const String baseUrl = 'https://beta.saicoacademy.com/api/';
+
+//https://beta.saicoacademy.com/api/
+
+//https://demo.aladdinds.com/academy/api/
 
 const String verify = 'accesstoken_verify.php';
 const String home = 'home.php';

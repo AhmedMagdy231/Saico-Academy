@@ -4,11 +4,10 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:saico_academy/Cubits/Auth%20Cubit/auth_cubit.dart';
-import 'package:saico_academy/Models/Add%20BookMarkes/add_book_markes.dart';
-import 'package:saico_academy/Models/BookMarks/bookMarks.dart';
+
 import 'package:saico_academy/Models/Category%20Details/category_details.dart';
 import 'package:saico_academy/Models/Home/home_model.dart';
-import 'package:saico_academy/Models/Page%20Details/page_details.dart';
+
 import 'package:saico_academy/Models/Remove%20bookMarks/remove_bookmarks.dart';
 import 'package:saico_academy/Models/Search%20Model/search_model.dart';
 import 'package:saico_academy/Models/Threads/threads_model.dart';
@@ -29,7 +28,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:saico_academy/Screens/Category%20Screen/category_screen.dart';
 
 import '../../Constant/Varibles/variables.dart';
-import '../../Models/Add Message/add_message_model.dart';
+
 import '../../Models/Categories/categoryProductsModel.dart';
 import '../../Models/Country/counties_model.dart';
 import '../../Models/Delete Account/delete_account.dart';
@@ -38,6 +37,7 @@ import '../../Models/Note/note.dart';
 import '../../Models/Notification Read/notification_read_model.dart';
 import '../../Models/Notification/notification.dart';
 import '../../Models/Notification/notification.dart';
+import '../../Models/Program Details/program_details_model.dart';
 import '../../Models/Thread Details/thread_details_model.dart';
 import '../../Models/verfiyToken/verify_token.dart';
 import '../../Network/Remote/dio_helper.dart';
@@ -54,11 +54,7 @@ class AppCubit extends Cubit<AppState> {
   static AppCubit get(context) => BlocProvider.of(context);
   int indexScreen =0;
 
-  List<Widget> myScreens = [
-    HomeScreen(),
-    CategoryScreen(),
-    ProfileScreen(),
-  ];
+
 
   String language = 'ar';
   bool isArabic = true;
@@ -86,12 +82,11 @@ class AppCubit extends Cubit<AppState> {
   UniversitiesModel? universitiesModel;
   ProfileModel? profileModel;
   CategoryDetailsModel? categoryDetailsModel;
-  PageDetailsModel? pageDetailsModel;
+  ProgramDetailsModel? programDetailsModel;
   DeleteModel? deleteModel;
-  AddBookMarksModel? addBookMarksModel;
+
   RemoveBookMarksModel? removeBookMarksModel;
-  BookMarksModel? bookMarksModel;
-  AddMessageModel? addMessageModel;
+
   ThreadsModel? threadsModel;
   ThreadDetailsModel? threadDetailsModel;
   ForgetPasswordModel? forgetPasswordModel;
@@ -118,21 +113,23 @@ class AppCubit extends Cubit<AppState> {
 
 
   Future<void> postPageDetails({required  id})async{
-    pageDetailsModel = null;
+    programDetailsModel = null;
     emit(GetPageDetailsLoading());
     DioHelper.postData(
       data: {
-        'type' : 'page',
+        'type' : 'product',
         'id' : id,
       },
       url: page_details,
       token: await CashHelper.getData(key: 'token'),
     ).then((value) async {
 
-      pageDetailsModel = PageDetailsModel.formJson(value.data);
+      programDetailsModel = ProgramDetailsModel.formJson(value.data);
 
       emit(GetPageDetailsSuccess());
 
+    }).catchError((error){
+      emit(GetPageDetailsError());
     });
   }
 
@@ -228,10 +225,6 @@ class AppCubit extends Cubit<AppState> {
 
   }
 
-  void removeFromBookMarks(int index){
-    bookMarksModel!.data!.pagesBookmarks!.removeAt(index);
-    emit(RemoveFromBookMarks());
-  }
 
   Future<void> postUserData({String? token})async{
     if( await CashHelper.getData(key: 'token') != ''){
@@ -394,79 +387,6 @@ class AppCubit extends Cubit<AppState> {
     return id;
   }
 
-
-  Future<void> getRegionData() async {
-    emit(GetRegionsLoading());
-    DioHelper.getData(
-
-      url: regions_request,
-    ).then((value) {
-      regionsModel = RegionsModel.formJson(value.data);
-
-      emit(GetRegionsSuccess());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetRegionsError());
-    });
-  }
-
-  String getRegionName(String id) {
-    String name =  '';
-    regionsModel!.data!.regions.forEach((element) {
-      if (element.rEGIONID == id) {
-        name =  element.regionName;
-      }
-    });
-    return name;
-  }
-
-  String getRegionID(String name) {
-    String id =  '';
-    regionsModel!.data!.regions.forEach((element) {
-      if (element.regionName == name) {
-        id =  element.rEGIONID;
-      }
-    });
-    return id;
-  }
-
-  Future<void> postGetUniversities( ) async {
-    universitiesModel = null;
-    emit(GetUniversityLoading());
-
-    await DioHelper.postData(
-      data: {
-
-      },
-      url: universities,
-    ).then((value) {
-      universitiesModel = UniversitiesModel.formJson(value.data);
-      emit(GetUniversitySuccess());
-    }).catchError((error) {
-      print(error);
-      emit(GetUniversityError());
-    });
-  }
-
-  String getUniversityName(String id) {
-    String name = '';
-    universitiesModel!.data!.universities.forEach((element) {
-      if (element.universityID == id) {
-        name = element.universityName!;
-      }
-    });
-    return name;
-  }
-  String getUniversityID(String name) {
-    String id = '';
-    universitiesModel!.data!.universities.forEach((element) {
-      if (element.universityName == name) {
-        id = element.universityID!;
-      }
-    });
-    return id;
-  }
-
   Future pickImage(ImageSource source) async {
     try {
       final imagee = await ImagePicker().pickImage(source: source);
@@ -552,7 +472,7 @@ class AppCubit extends Cubit<AppState> {
 
 
   Future<void> postCategoryDetails({required  id})async{
-
+    print("+++++++++++++++${id}++++++++++++");
     categoryDetailsModel = null;
     emit(GetCategoryDetailsLoading());
     DioHelper.postData(
@@ -592,143 +512,18 @@ class AppCubit extends Cubit<AppState> {
   }
 
 
-  Future<void> postAddBookMarks({
-    required id,
-}) async {
-    emit(AddBookMarksLoading());
-
-    await DioHelper.postData(
-      data: {
-        'type' : 'add',
-        'id' : id,
-      },
-      url: BOOKMARKS,
-      token: await CashHelper.getData(key: 'token'),
-    ).then((value) {
-      addBookMarksModel = AddBookMarksModel.fromJson(value.data);
-      emit(AddBookMarksSuccess());
-    }).catchError((error){
-      print(error.toString());
-      emit(AddBookMarksError());
-
-    });
-  }
-
-
-  Future<void> postRemoveBookMarks({
-    required id,
-  }) async {
-    emit(RemoveBookMarksLoading());
-
-    await DioHelper.postData(
-      data: {
-        'type' : 'remove',
-        'id' : id,
-      },
-      url: BOOKMARKS,
-      token: await CashHelper.getData(key: 'token'),
-    ).then((value) {
-      removeBookMarksModel = RemoveBookMarksModel.fromJson(value.data);
-      emit(RemoveBookMarksSuccess());
-    }).catchError((error){
-      print(error.toString());
-      emit(RemoveBookMarksError());
-
-    });
-  }
-
-
-  Future<void> postBookMarks() async {
-    emit(GetBookMarksLoading());
-
-    await DioHelper.postData(
-      data: {},
-      url: BOOKMARKS,
-      token: await CashHelper.getData(key: 'token'),
-    ).then((value) {
-      print(value.data);
-      bookMarksModel = BookMarksModel.fromJson(value.data);
-      emit(GetBookMarksSuccess());
-    }).catchError((error){
-      print(error.toString());
-      emit(GetBookMarksError());
-
-    });
-  }
 
 
 
-  Future<void> postAddMessage({
-    required String pageId,
-    required String message,
-    required String threadId,
-
-}) async {
-    emit(AddMessageLoading());
-
-    await DioHelper.postData(
-      data: {
-        'PAGEID' : pageId,
-        'type' : 'add',
-        'id' : threadId,
-        'message_text' : message
-      },
-      url: ADD_MESSAGE,
-      token: await CashHelper.getData(key: 'token'),
-    ).then((value) {
-      print(value.data);
-      addMessageModel = AddMessageModel.fromJson(value.data);
-      emit(AddMessageSuccess());
-    }).catchError((error){
-      print(error.toString());
-      emit(AddMessageError());
-    });
-  }
 
 
 
-  Future<void> postThreads()async{
-
-    emit(GetThreadsLoading());
-    DioHelper.postData(
-        data: {},
-        url: THREADS,
-        token: await CashHelper.getData(key: 'token'),
-    ).then((value){
-
-      threadsModel = ThreadsModel.formJson(value.data);
-      emit(GetThreadsSuccess());
-    }).catchError((error){
-      print(error.toString());
-      emit(GetThreadsError());
-    });
-
-  }
 
 
-  Future<void> postThreadsDetails({required String id,bool? load})async{
-    if(load == null){
-      threadDetailsModel = null;
-    }
 
-    emit(GetThreadsDetailsLoading());
 
-    DioHelper.postData(
-      data: {
-        'type' : 'thread',
-        'id' : id,
-      },
-      url: THREADS,
-      token: await CashHelper.getData(key: 'token'),
-    ).then((value){
-      threadDetailsModel = ThreadDetailsModel.formJson(value.data);
-      emit(GetThreadsDetailsSuccess());
-    }).catchError((error){
-      print(error.toString());
-      emit(GetThreadsDetailsError());
-    });
 
-  }
+
 
 
   Future<void> postForgetPassword({required String email})async{
