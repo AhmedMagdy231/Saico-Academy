@@ -1,13 +1,9 @@
-
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:saico_academy/Cubits/Auth%20Cubit/auth_cubit.dart';
-
 import 'package:saico_academy/Models/Category%20Details/category_details.dart';
 import 'package:saico_academy/Models/Home/home_model.dart';
-
 import 'package:saico_academy/Models/Remove%20bookMarks/remove_bookmarks.dart';
 import 'package:saico_academy/Models/Search%20Model/search_model.dart';
 import 'package:saico_academy/Models/Threads/threads_model.dart';
@@ -17,18 +13,13 @@ import 'package:saico_academy/Models/jobs/jobs_model.dart';
 import 'package:saico_academy/Models/profile/profile_model.dart';
 import 'package:saico_academy/Models/regions/regions_model.dart';
 import 'package:saico_academy/Network/Local/CashHelper.dart';
-
-
-
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:saico_academy/Screens/Category%20Screen/category_screen.dart';
-
 import '../../Constant/Varibles/variables.dart';
-
 import '../../Models/Categories/categoryProductsModel.dart';
 import '../../Models/Country/counties_model.dart';
 import '../../Models/Delete Account/delete_account.dart';
@@ -42,12 +33,12 @@ import '../../Models/Thread Details/thread_details_model.dart';
 import '../../Models/verfiyToken/verify_token.dart';
 import '../../Network/Remote/dio_helper.dart';
 import '../../Network/endPoind.dart';
-
 import 'package:http_parser/http_parser.dart';
-
 import '../../Screens/Home Screen/home_screen.dart';
 import '../../Screens/Profile Screen/profile_screen.dart';
 part 'app_state.dart';
+
+
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
@@ -97,6 +88,7 @@ class AppCubit extends Cubit<AppState> {
   TimeZoneModel? timeZoneModel;
 
 
+
   List<String> images = [];
   List<String> names = [];
   List<Widget> screens = [];
@@ -107,6 +99,7 @@ class AppCubit extends Cubit<AppState> {
     names.clear();
     screens.clear();
   }
+
 
 
 
@@ -225,7 +218,6 @@ class AppCubit extends Cubit<AppState> {
 
   }
 
-
   Future<void> postUserData({String? token})async{
     if( await CashHelper.getData(key: 'token') != ''){
       userModel = null;
@@ -288,7 +280,9 @@ class AppCubit extends Cubit<AppState> {
           hasError: userModel!.hasError,
           errors: userModel!.errors,
           messages: userModel!.messages,
-          token: userModel!.hasError? null : userModel!.data!.student!.studentAccesstoken,
+          token: userModel!.hasError? null : userModel!.isStudent == true?
+          userModel!.data!.student!.studentAccesstoken:
+          userModel!.data!.instructor!.instructorAccesstoken,
         ));
       }).catchError((error){
         print(error.toString());
@@ -337,8 +331,6 @@ class AppCubit extends Cubit<AppState> {
 
   }
 
-
-
   Future<void> getCategory()async{
     emit(GetCategoryLoading());
     DioHelper.getData(
@@ -377,6 +369,7 @@ class AppCubit extends Cubit<AppState> {
     });
     return name;
   }
+
   String getJobID(String name) {
     String id =  '';
     jobsModel!.data!.studentJobs.forEach((element) {
@@ -427,22 +420,20 @@ class AppCubit extends Cubit<AppState> {
     required String student_timeZone,
     required String student_type,
     required String student_phone,
+    required String student_password,
 
 
     FormData? student_pic_file,
   }) async {
-
-
-
     FormData formData = FormData.fromMap({
-      'password' : '12345678',
+      'password' : student_password,
       'student_fullname': student_name,
       'student_email': student_email,
       'student_phone': student_phone,
       'student_timezone' : student_timeZone,
       'student_country' : student_country,
       'student_gender' : student_type,
-      "student_pic_file": image == null
+      "student_profilepicture_file": image == null
           ? ''
           : await MultipartFile.fromFile(
         image!.path,
@@ -496,6 +487,7 @@ class AppCubit extends Cubit<AppState> {
 
 
   Future<void> postDeleteAccount() async {
+
     emit(DeleteAccountLoading());
 
     await DioHelper.postData(
@@ -633,7 +625,6 @@ class AppCubit extends Cubit<AppState> {
       url: page_details,
       token: await CashHelper.getData(key: 'token'),
     ).then((value) {
-       print(value.data);
       searchModel = SearchModel.formJson(value.data);
       emit(SearchSuccess());
 

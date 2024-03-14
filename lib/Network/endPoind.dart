@@ -1,5 +1,7 @@
 const String baseUrl = 'https://beta.saicoacademy.com/api/';
 
+const String saicoUrl = 'https://beta.saicoacademy.com/api';
+
 //https://beta.saicoacademy.com/api/
 
 //https://demo.aladdinds.com/academy/api/
@@ -42,4 +44,6 @@ const String THREADS = 'threads.php?lang=ar';
 const String COUNTRIES = 'countries.php';
 
 const String TIME_ZONE = 'timezones.php';
+
+const String STUDENT_SUBSCRIPTION = 'student_subscriptions.php';
 

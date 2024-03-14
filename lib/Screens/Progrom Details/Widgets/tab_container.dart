@@ -25,7 +25,6 @@ class MyTabContainer extends StatelessWidget {
       height: height * 0.4,
       child: TabContainer(
         color: MyColor.primaryColor,
-        textDirection: TextDirection.rtl,
         isStringTabs: true,
         selectedTextStyle: GoogleFonts.notoSansArabic(
           color: Colors.white,
@@ -38,7 +37,7 @@ class MyTabContainer extends StatelessWidget {
         ),
         tabs:  [
           'الوصف',
-          if( cubit.programDetailsModel!.data!.product!.productGoalsEnabled! =='1')'ألاهداف',
+          if( cubit.programDetailsModel!.data!.product!.productGoalsEnabled! =='1')'الأهداف',
           if( cubit.programDetailsModel!.data!.product!.productAdvantagesEnabled! =='1') 'المميزات',
           if( cubit.programDetailsModel!.data!.product!.productAdvantagesEnabled! =='1')'التكوين',
         ],

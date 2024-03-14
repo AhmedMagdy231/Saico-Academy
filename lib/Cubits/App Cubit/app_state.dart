@@ -4,6 +4,9 @@ part of 'app_cubit.dart';
 
 abstract class AppState {}
 
+class ChangeShowPassword extends AppState{}
+
+
 class AppInitial extends AppState {}
 
 class ChangeIndexSlider extends AppState {}
@@ -68,6 +71,8 @@ class ChangeProfileSuccess extends AppState{
   ChangeProfileSuccess({required this.hasError,required this.messages,required this.errors,});
 }
 class ChangeProfileError extends AppState{}
+
+
 
 
 class ImagePickerSuccess extends AppState{}

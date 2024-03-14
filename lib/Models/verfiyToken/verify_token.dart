@@ -45,7 +45,7 @@ class Data {
     profileComplete = json['profileComplete'];
     newNotifications = json['new_notifications'];
     student = json['student'] != null ? new Student.fromJson(json['student']) : null;
-    instructor = json['instructor'] != null ? new Instructor.fromJson(json['student']) : null;
+    instructor = json['instructor'] != null ? new Instructor.fromJson(json['instructor']) : null;
   }
 
 

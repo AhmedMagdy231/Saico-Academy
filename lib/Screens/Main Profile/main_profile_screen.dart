@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:saico_academy/Cubits/App%20Cubit/app_cubit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:saico_academy/Cubits/Subscribtion%20Cubit/sub_cubit.dart';
+import 'package:saico_academy/Screens/Main%20Profile/widgets/build_instructor_widget.dart';
 import 'package:saico_academy/Screens/Main%20Profile/widgets/build_list_title.dart';
+import 'package:saico_academy/Screens/Main%20Profile/widgets/build_student_widget.dart';
 import 'package:saico_academy/Screens/Profile%20Screen/profile_screen.dart';
+import 'package:saico_academy/Screens/Student%20Subscription/student_subscription_screen.dart';
 
 import '../../Components/Text/text.dart';
 import '../../Components/components.dart';
@@ -62,7 +66,9 @@ class MainProfileScreen extends StatelessWidget {
                                 child: SizedBox(
                                   child: cubit.image == null ?
                                   Image.network(
-                                    cubit.userModel!.data!.student!.studentProfilepicture!,
+                                  cubit.userModel!.isStudent != true? cubit.userModel!.data!.instructor!.instructorPic!:
+                                  cubit.userModel!.data!.student!.studentProfilepicture!,
+
                                     fit: BoxFit.cover,
                                   )
                                       : Image.file(
@@ -99,7 +105,10 @@ class MainProfileScreen extends StatelessWidget {
                       child: cubit.image == null ? CircleAvatar(
                         radius: width * 0.18,
                         backgroundImage: NetworkImage(
-                            cubit.userModel!.data!.student!.studentProfilepicture!),
+                            cubit.userModel!.isStudent != true?
+                            cubit.userModel!.data!.instructor!.instructorPic!:
+                            cubit.userModel!.data!.student!.studentProfilepicture!
+                        ),
                       ) : CircleAvatar(
                         radius: width * 0.18,
                         backgroundImage: FileImage(cubit.image!),
@@ -109,7 +118,9 @@ class MainProfileScreen extends StatelessWidget {
                 ),
 
                 BuildText(
-                  text: cubit.userModel!.data!.student!.studentFullname!,
+                  text:  cubit.userModel!.isStudent != true?
+                  cubit.userModel!.data!.instructor!.instructorName!:
+                  cubit.userModel!.data!.student!.studentFullname!,
                   color: Colors.black,
                   bold:  true,
                   size: 18,
@@ -117,7 +128,10 @@ class MainProfileScreen extends StatelessWidget {
 
                 ),
                 BuildText(
-                  text: cubit.userModel!.data!.student!.studentEmail!,
+                  text:
+                  cubit.userModel!.isStudent != true?
+                  cubit.userModel!.data!.instructor!.instructorEmail!:
+                  cubit.userModel!.data!.student!.studentEmail!,
                   color: Colors.black54,
 
                 ),
@@ -125,20 +139,9 @@ class MainProfileScreen extends StatelessWidget {
 
                 SizedBox(height: height*0.06,),
 
-                Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: width*0.05),
-                  child: Column(
-                    children: [
-                       BuildListTitle(text: 'بياناتي الشخصية', icon: Icons.person, function: (){
-                         navigateTo(context, ProfileScreen());
-                       }),
-                      BuildListTitle(text: 'طلباتي', icon: Icons.shopping_cart_outlined, function: (){}),
-                      BuildListTitle(text: 'اشتراكاتى', icon: Icons.subscriptions, function: (){}),
-                      BuildListTitle(text: 'تسجيل خروج', icon: Icons.sign_language_outlined, function: (){}),
-                      BuildListTitle(text: 'حذف الحساب', icon: Icons.person_off_outlined, function: (){}),
-                    ],
-                  ),
-                ),
+                cubit.userModel!.isStudent == true?
+                const StudentMainProfileWidget():
+                const InstructorMainProfileWidget(),
 
               ],
             ),

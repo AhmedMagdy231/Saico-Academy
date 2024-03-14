@@ -17,20 +17,22 @@ class InstructorOfCoursesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height * 0.22,
+      height: height * 0.25,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: instructors.length,
         itemBuilder: (context, index) {
           return buildItem(
               image: instructors[index].instructorPic!,
-              name: instructors[index].instructorName!);
+              name: instructors[index].instructorName!,
+              position: instructors[index].instructorPosition!,
+          );
         },
       ),
     );
   }
 
-  Padding buildItem({required String image, required String name}) {
+  Padding buildItem({required String image, required String name,required String position}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -49,7 +51,17 @@ class InstructorOfCoursesWidget extends StatelessWidget {
               text: name,
               center: true,
               maxLines: 1,
+              bold: true,
             ),
+            BuildText(
+              text: position,
+              color: Colors.grey,
+              center: true,
+              size: 13,
+              maxLines: 1,
+            ),
+
+
           ],
         ),
       ),

@@ -118,13 +118,12 @@ class AuthCubit extends Cubit<AuthState> {
         hasError: loginModel!.hasError,
         errors: loginModel!.errors,
         messages: loginModel!.messages,
-        token: loginModel!.hasError? null : loginModel!.data!.student!.studentAccesstoken,
+        token: loginModel!.hasError? null : loginModel!.isStudent == true?
+        loginModel!.data!.student!.studentAccesstoken:
+        loginModel!.data!.instructor!.instructorAccesstoken,
       ));
 
 
-    }).catchError((error) {
-      print(error.toString());
-      emit(LoginError());
     });
   }
 

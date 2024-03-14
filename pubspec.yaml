@@ -121,6 +121,10 @@ dependencies:
 
   tab_container: ^2.0.0
 
+  expandable: ^5.0.1
+
+ # lecle_yoyo_player: ^0.0.8
+
 
  #PDF
   syncfusion_flutter_pdfviewer: any

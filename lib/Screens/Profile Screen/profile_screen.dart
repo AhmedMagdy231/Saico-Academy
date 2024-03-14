@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:awesome_icons/awesome_icons.dart';
+import 'package:saico_academy/Components/TextField/text_form_field.dart';
 
 import 'package:saico_academy/Cubits/App%20Cubit/app_cubit.dart';
 
@@ -14,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:saico_academy/Screens/Profile%20Screen/widget/top_widget/container_with_image_widget.dart';
 import 'package:searchfield/searchfield.dart';
 
 
@@ -23,11 +26,18 @@ import '../../Components/components.dart';
 import '../../Constant/Colors/colors.dart';
 import '../../Shared/Widgets/Build Login First/build_login_first.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+
+
+class ProfileScreen extends StatelessWidget{
   final myFocusNodeTimeZone = FocusNode();
+
   final myFocusNodeCountry = FocusNode();
+
+  TextEditingController passwordController = TextEditingController();
+
   var formKey = GlobalKey<FormState>();
+
+  bool show = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +49,8 @@ class ProfileScreen extends StatelessWidget {
         .of(context)
         .size
         .width;
-    
-    
+
+
     String getGender(UserModel user){
       if(user.isStudent == true){
         if(user.data!.student!.studentGender == '1') {
@@ -53,12 +63,12 @@ class ProfileScreen extends StatelessWidget {
          return  'من فضلك أختر النوع';
         }
       }
-      
+
       return '';
     }
-    
-    
-    
+
+
+
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
         // TODO: implement listener
@@ -103,120 +113,11 @@ class ProfileScreen extends StatelessWidget {
                 : cubit.userModel == null? buildLoadingWidget() : SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    height: height * 0.25,
-                    child: Stack(
-                      children: [
-                        ClipPath(
-                          clipper: ContainerCliper(),
-                          child: Container(
-                            width: width,
-                            height: height * 0.17,
-                            decoration: BoxDecoration(
-                              color: MyColor.primaryColor,
 
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: width,
-                          height: height * 0.1,
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: BuildText(
-                              text: '',
-                              bold: true,
-                              size: 25,
-                              color: Colors.white,
-                              center: true,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: height * 0.005,
-                          left: width / 2 - width * 0.3,
-
-                          child: AvatarGlow(
-                            glowColor: Colors.white,
-                            endRadius: width*0.3,
-                            duration: const Duration(milliseconds: 1500),
-                            repeat: true,
-                            showTwoGlows: true,
-                            repeatPauseDuration:const Duration(milliseconds: 100),
-                            child: GestureDetector(
-                              onTap: () {
-                                //
-                                showDialog(
-                                    context: context,
-                                    builder: (_){
-                                      return AlertDialog(
-
-                                        contentPadding: EdgeInsets.zero,
-                                        shape:const  RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.zero, // Set the border radius to zero
-                                        ),
-
-                                        content: Hero(
-                                          tag: 'hom',
-                                          child: SizedBox(
-                                            child: cubit.image == null ?
-                                            Image.network(
-                                              cubit.userModel!.data!.student!.studentProfilepicture!,
-                                              fit: BoxFit.cover,
-                                            )
-                                                : Image.file(
-                                              cubit.image!,
-                                              fit: BoxFit.contain,
-
-                                            ),
-                                          ),
-                                        ),
-                                        actionsPadding: EdgeInsets.symmetric(vertical: height*0.005),
-                                        actions: [
-                                          Center(
-                                            child: buildButton(
-                                              width: width*0.3,
-                                              height: height*0.05,
-                                              function: (){
-                                                cubit.pickImage(ImageSource.gallery);
-                                              },
-                                              text: 'تغير الصوره',
-                                              size: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    }
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: MyColor.primaryColor,
-                                ),
-                                padding: EdgeInsets.all(width * 0.015),
-                                child: cubit.image == null ? FadeInDown(
-                                  from: height*0.02,
-                                  child: CircleAvatar(
-                                    radius: width * 0.18,
-                                    backgroundImage: NetworkImage(
-                                        cubit.userModel!.data!.student!.studentProfilepicture!),
-                                  ),
-                                ) : FadeInDown(
-                                  from: height*0.02,
-                                  child: CircleAvatar(
-                                    radius: width * 0.18,
-                                    backgroundImage: FileImage(cubit.image!),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
+                  TopWidgetProfile(
+                    cubit: cubit,
                   ),
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                     child: Form(
@@ -230,7 +131,9 @@ class ProfileScreen extends StatelessWidget {
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: BuildText(
-                                text: cubit.userModel!.data!.student!.studentFullname!,
+                                text: cubit.userModel!.isStudent != true?
+                                cubit.userModel!.data!.instructor!.instructorName!:
+                                cubit.userModel!.data!.student!.studentFullname!,
                                 bold: true,
                                 size: 25,
                                 center: true,
@@ -292,13 +195,13 @@ class ProfileScreen extends StatelessWidget {
                                 cubit.typeController.text = '1';
                               }
                               else
-                                {
-                                  cubit.typeController.text = '2';
-                                }
+                              {
+                                cubit.typeController.text = '2';
+                              }
                             },
                           ),
 
-                         SizedBox(height: height*0.02,),
+                          SizedBox(height: height*0.02,),
 
                           buildTitle(height:height, text: 'الدولة'),
                           Directionality(
@@ -315,10 +218,10 @@ class ProfileScreen extends StatelessWidget {
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal:16.0),
-                                        child: BuildText(
-                                          text: e,
-                                        )
+                                          padding: const EdgeInsets.symmetric(horizontal:16.0),
+                                          child: BuildText(
+                                            text: e,
+                                          )
                                       ),
                                     ),
                                   ))).toList(),
@@ -362,7 +265,7 @@ class ProfileScreen extends StatelessWidget {
                               onSuggestionTap: (value){
 
                                 int index = cubit.countriesModel!.data!.countriesList.indexWhere((element) => element == value.searchKey);
-                               cubit.countryController.text = cubit.countriesModel!.data!.countries![index].value!;
+                                cubit.countryController.text = cubit.countriesModel!.data!.countries![index].value!;
                                 FocusScope.of(context).unfocus();
 
                               },
@@ -444,14 +347,86 @@ class ProfileScreen extends StatelessWidget {
                               height: height * 0.05,
                               function: () {
                                 if(formKey.currentState!.validate()){
-                                  cubit.postChangeProfile(
-                                    student_country: cubit.countryController.text,
-                                    student_phone: cubit.phoneController.text,
-                                    student_timeZone: cubit.timeZoneController.text,
-                                    student_type: cubit.typeController.text,
-                                    student_name: cubit.nameController.text,
-                                    student_email: cubit.emailController.text,
+                                  passwordController.clear();
+                                  showDialog(
+                                      context: context,
+                                      builder: (context){
+                                        bool showPassword = false;
+                                        var formPasswordKey = GlobalKey<FormState>();
+                                        return AlertDialog(
+                                          title: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: BuildText(
+                                              text:  'أدخل الرقم السري لي تعديل ملفك الشخصي',
+
+                                            ),
+                                          ),
+
+                                          content: StatefulBuilder(
+                                            builder: (BuildContext context, StateSetter setState){
+                                              return Form(
+                                                key: formPasswordKey,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    BuildTextFormField(
+                                                      valid: (value) {
+                                                        if (value!.isEmpty) {
+                                                          return 'من فضلك أدخل الرقم السري';
+                                                        }
+                                                        return null;
+                                                      },
+                                                      controller: passwordController,
+                                                      hintText: 'الرقم السري',
+                                                      prefixIcon: FontAwesomeIcons.lock,
+                                                      isPassword: !showPassword,
+                                                      suffixIcon: IconButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            showPassword = !showPassword;
+                                                          });
+                                                        },
+                                                        icon: Padding(
+                                                          padding: const EdgeInsets.all(12),
+                                                          child: Icon(
+                                                            showPassword
+                                                                ? FontAwesomeIcons.eye
+                                                                : FontAwesomeIcons.eyeSlash,
+                                                            color: MyColor.primaryColor,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: height*0.02,),
+                                                    buildButton(
+                                                      width: width*0.4,
+                                                      height: height*0.05,
+                                                      function: (){
+                                                        if(formPasswordKey.currentState!.validate()){
+                                                          Navigator.pop(context);
+                                                          cubit.postChangeProfile(
+                                                            student_country: cubit.countryController.text,
+                                                            student_phone: cubit.phoneController.text,
+                                                            student_timeZone: cubit.timeZoneController.text,
+                                                            student_type: cubit.typeController.text,
+                                                            student_name: cubit.nameController.text,
+                                                            student_email: cubit.emailController.text,
+                                                            student_password: passwordController.text,
+                                                          );
+                                                        }
+                                                      },
+                                                      text: 'موافق',
+                                                      size:  15,
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
                                   );
+
                                 }
                               },
                               text: 'تعديل',
@@ -461,13 +436,14 @@ class ProfileScreen extends StatelessWidget {
                           SizedBox(height: height * 0.03,),
 
                           if(myFocusNodeTimeZone.hasFocus || myFocusNodeCountry.hasFocus)
-                             SizedBox(
+                            SizedBox(
                               height: height*0.2,
                             ),
                         ],
                       ),
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -488,8 +464,6 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         );
   }
-
-
 
   Widget buildEditTextFormField({
     required AppCubit cubit,

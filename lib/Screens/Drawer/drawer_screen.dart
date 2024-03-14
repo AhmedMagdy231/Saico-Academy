@@ -43,14 +43,20 @@ Drawer buildDrawer(double width, double height, AppCubit cubit,context) {
                 ),
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(cubit.userModel!.data!.student!.studentProfilepicture!),
+                  backgroundImage: NetworkImage(
+                      cubit.userModel!.isStudent != true?
+                      cubit.userModel!.data!.instructor!.instructorPic!:
+                      cubit.userModel!.data!.student!.studentProfilepicture!
+                  ),
                 ),
               ),
               SizedBox(
                 height: height*0.01,
               ),
               BuildText(
-                text: cubit.userModel!.data!.student!.studentFullname!,
+                text:  cubit.userModel!.isStudent != true?
+                cubit.userModel!.data!.instructor!.instructorName!:
+                cubit.userModel!.data!.student!.studentFullname!,
                 color: Colors.white,
                 bold:  true,
                 size: 18,
@@ -58,7 +64,9 @@ Drawer buildDrawer(double width, double height, AppCubit cubit,context) {
 
               ),
               BuildText(
-                text: cubit.userModel!.data!.student!.studentEmail!,
+                text:  cubit.userModel!.isStudent != true?
+                cubit.userModel!.data!.instructor!.instructorEmail!:
+                cubit.userModel!.data!.student!.studentEmail!,
                 color: Colors.white38,
 
               ),
@@ -69,7 +77,7 @@ Drawer buildDrawer(double width, double height, AppCubit cubit,context) {
           text: 'حسابي',
           icon: 'assets/icons/person.svg',
           function: (){
-            cubit.changeIndexScreen(3);
+            cubit.changeIndexScreen(2);
             Navigator.pop(context);
           },
           num: 0,
