@@ -298,7 +298,7 @@ class StreamableProductsFiles {
   String? profileVideo;
   String? profileProcessed;
   String? profileHls;
-  String? profileprogressValue;
+  dynamic profileprogressValue;
   int? videoEnabled;
   int? videoNext;
 

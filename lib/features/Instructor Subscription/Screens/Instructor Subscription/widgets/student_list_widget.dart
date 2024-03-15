@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:saico_academy/features/Instructor%20Subscription/Cubit/instructor_sub_cubit.dart';
 import 'package:saico_academy/features/Instructor%20Subscription/Model/instructor_subscription_model.dart';
 
 import '../../../../../Components/Text/text.dart';
+import '../../../../../Components/components.dart';
+import '../../Instructor Subscription Details/instructor_subscription_detials_screen.dart';
 
 class StudentOfCoursesWidget extends StatelessWidget {
   final List<ProductsSubscriptions> productsSubscriptions;
@@ -23,7 +26,10 @@ class StudentOfCoursesWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: (){
-
+              InstructorSubCubit.get(context).getInstructorSubscriptionDetailsData(
+                  id: productsSubscriptions[index].pROSUBSCRIPTIONID!,
+              );
+              navigateTo(context, InstructorSubscriptionDetailsScreen());
             },
             child: buildItem(
               image: productsSubscriptions[index].studentProfilepicture!,

@@ -71,11 +71,10 @@ Future<void> getInstructorSubscriptionChapterData({required String id})async{
     url: 'instructor_subscriptions.php',
     token: CashHelper.getData(key: 'token'),
   ).then((value){
-    print(value.data);
     instructorSubscriptionChapterModel = InstructorSubscriptionChapterModel.formJson(value.data);
     emit(GetInstructorSubscriptionChapterSuccess());
   }).catchError((error){
-
+    print(error.toString());
     emit(GetInstructorSubscriptionChapterError());
   });
 }
