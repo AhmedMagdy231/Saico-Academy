@@ -46,10 +46,6 @@ class InstructorSubscriptionScreen extends StatelessWidget {
 
                 ),
 
-
-
-
-
               ],
             ),
           ),

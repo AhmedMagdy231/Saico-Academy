@@ -83,16 +83,7 @@ Drawer buildDrawer(double width, double height, AppCubit cubit,context) {
           num: 0,
           width: width,
         ),
-        buildListTile(
-          text: 'ملاحظاتي',
-          icon: 'assets/icons/notes.svg',
-          function: (){
-            cubit.changeIndexScreen(2);
-            Navigator.pop(context);
-          },
-          num: 1,
-          width: width,
-        ),
+
         buildListTile(
           text: 'الأقسام',
           icon: 'assets/icons/education.svg',
